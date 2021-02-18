@@ -30,4 +30,10 @@ public class TodoAppService {
         int nextId = dao.getNextId();
         dao.insert(nextId, title, detail);
     }
+
+    //解除する
+    public void release(int todoId) {
+        dao.extract(todoId);
+    }
+
 }
