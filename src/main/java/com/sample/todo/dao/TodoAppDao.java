@@ -26,8 +26,9 @@ public class TodoAppDao {
         return resultList;
     }
 
+    //レコードが0の時にnullではなく、0を返すように変更
     public int getNextId() {
-        int maxTodoId = jdbcTemplate.queryForObject("SELECT MAX(TODO_ID) FROM TODO_APP;",
+        int maxTodoId = jdbcTemplate.queryForObject("SELECT NVL(MAX(TODO_ID),0) FROM TODO_APP;",
                 new MapSqlParameterSource(null), Integer.class);
         return ++maxTodoId;
     }
@@ -38,5 +39,12 @@ public class TodoAppDao {
         paramMap.addValue("title", title);
         paramMap.addValue("detail", detail);
         jdbcTemplate.update("INSERT INTO TODO_APP VALUES(:todoId, :title, :detail)", paramMap);
+    }
+
+    /*テーブル削除命令を追加*/
+    public <T> void extract(int todoId) {
+        MapSqlParameterSource paramMap = new MapSqlParameterSource();
+        paramMap.addValue("todoId", todoId);
+        jdbcTemplate.update("DELETE FROM TODO_APP WHERE TODO_ID = :todoId",paramMap);
     }
 }
