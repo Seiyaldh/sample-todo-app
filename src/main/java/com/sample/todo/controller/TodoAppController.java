@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * ブラウザからのリクエストはここにくる
@@ -42,4 +43,12 @@ public class TodoAppController {
         service.register(todoApp.getTitle(), todoApp.getDetail());
         return "redirect:index";// 登録したらindexに移る
     }
+
+    //解除の指示を行う
+    @RequestMapping(value = "/release", method = { RequestMethod.GET, RequestMethod.POST })
+    String release(@RequestParam int releaseId, Model model) {
+        service.release(releaseId);
+        return "redirect:index";// 解除したらindexに移る
+    }
+
 }
