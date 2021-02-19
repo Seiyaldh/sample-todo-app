@@ -1,5 +1,6 @@
 package com.sample.todo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sample.todo.entity.TodoApp;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 /**
  * ブラウザからのリクエストはここにくる
@@ -39,7 +43,16 @@ public class TodoAppController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    String register(@ModelAttribute TodoApp todoApp, Model model) {
+    String register(@Validated @ModelAttribute TodoApp todoApp, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            List<String> errorList = new ArrayList<String>();
+            for(ObjectError error : result.getAllErrors()) {
+            errorList.add(error.getDefaultMessage());
+}           model.addAttribute("validationError", errorList);
+            return "detail";
+        }
+        //エラーが吐かれたら何もせずにdetailに戻る
+        
         service.register(todoApp.getTitle(), todoApp.getDetail());
         return "redirect:index";// 登録したらindexに移る
     }
@@ -59,7 +72,17 @@ public class TodoAppController {
 
     //更新の指示を行う
     @RequestMapping(value = "/updater", method = { RequestMethod.GET, RequestMethod.POST })
-    String release(@RequestParam int todoId, @ModelAttribute TodoApp todoApp, Model model) {
+    String updater(@RequestParam int todoId, @Validated @ModelAttribute("TodoApp")  TodoApp todoApp, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            List<String> errorList = new ArrayList<String>();
+            for(ObjectError error : result.getAllErrors()) {
+            errorList.add(error.getDefaultMessage());
+}           model.addAttribute("validationError", errorList);
+            model.addAttribute("todoId", todoId);
+            return "update";
+        }
+        //エラーが吐かれたら何もせずにupdateに戻る
+
         service.updater(todoId, todoApp.getTitle(), todoApp.getDetail());
         return "redirect:index";// 登録したらindexに移る
     }
