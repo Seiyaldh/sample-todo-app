@@ -9,6 +9,12 @@
 </head>
 
 <body>
+    <table>
+        <tr th:if="${validationError}" th:each="error : ${validationError}">
+          <td style="color:red;" th:text="${error}"></td>
+        </tr>
+    </table>
+
     <h1>New Todo</h1>
 
     <form method="POST" action="./register">
