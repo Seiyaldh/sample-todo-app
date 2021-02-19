@@ -47,4 +47,13 @@ public class TodoAppDao {
         paramMap.addValue("todoId", todoId);
         jdbcTemplate.update("DELETE FROM TODO_APP WHERE TODO_ID = :todoId",paramMap);
     }
+
+    //テーブル更新命令を追加
+    public <T> void update(int todoId, String title, String detail) {
+        MapSqlParameterSource paramMap = new MapSqlParameterSource();
+        paramMap.addValue("todoId", todoId);
+        paramMap.addValue("title", title);
+        paramMap.addValue("detail", detail);
+        jdbcTemplate.update("UPDATE TODO_APP SET TITLE = :title, DETAIL = :detail WHERE TODO_ID = :todoId", paramMap);
+    }
 }
