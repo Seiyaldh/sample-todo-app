@@ -51,4 +51,17 @@ public class TodoAppController {
         return "redirect:index";// 解除したらindexに移る
     }
 
+    @RequestMapping(value = "/change", method =  {RequestMethod.GET, RequestMethod.POST })
+    String change(@RequestParam int todoId, Model model) {
+        model.addAttribute("todoId", todoId);
+        return "update";
+    }
+
+    //更新の指示を行う
+    @RequestMapping(value = "/updater", method = { RequestMethod.GET, RequestMethod.POST })
+    String release(@RequestParam int todoId, @ModelAttribute TodoApp todoApp, Model model) {
+        service.updater(todoId, todoApp.getTitle(), todoApp.getDetail());
+        return "redirect:index";// 登録したらindexに移る
+    }
+
 }
