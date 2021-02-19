@@ -36,4 +36,9 @@ public class TodoAppService {
         dao.extract(todoId);
     }
 
+    //更新する
+    public void updater(int todoId, String title, String detail) {
+        dao.update(todoId, title, detail);
+    }
+
 }
