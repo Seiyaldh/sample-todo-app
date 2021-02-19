@@ -29,9 +29,12 @@
                 <td class="detail" th:text="${result['detail']}"></td>
                 <td>
                     <form method="POST" action="./release">
-                        <button type="submit" name="releaseId" th:value="${result['todoId']}">
-                            Remove
-                        </button>
+                        <button type="submit" name="releaseId" th:value="${result['todoId']}">Remove</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="./change">
+                        <button type="submit" name="todoId" th:value="${result['todoId']}">Update</button>
                     </form>
                 </td>
             </tr>
