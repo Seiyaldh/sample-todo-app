@@ -16,10 +16,10 @@ public class TodoApp implements Serializable {
 
     private int todoId;
 
-    @Size(min = 0, max = 30) //titleの文字数制限
+    @Size(min = 0, max = 30, message="titleは{min}文字以上{max}文字以下です。") //titleの文字数制限
     private String title;
 
-    @Size(min = 0, max = 30) //detailの文字数制限
+    @Size(min = 0, max = 30, message="detailは{min}文字以上{max}文字以下です。") //detailの文字数制限
     private String detail;
 
     public TodoApp() {
