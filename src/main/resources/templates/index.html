@@ -19,6 +19,7 @@
                 <th>#</th>
                 <th>Title</th>
                 <th>Detail</th>
+                <th>Due date</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@
                 <td class="todo-id" th:text="${result['todoId']}"></td>
                 <td class="title" th:text="${result['title']}"></td>
                 <td class="detail" th:text="${result['detail']}"></td>
+                <td class="dueDate" th:text="${result['dueDate']}"></td>
                 <td>
                     <form method="POST" action="./release">
                         <button type="submit" name="releaseId" th:value="${result['todoId']}">Remove</button>
