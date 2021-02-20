@@ -1,6 +1,7 @@
 package com.sample.todo.service;
 
 import java.util.List;
+import java.util.Date;
 
 import com.sample.todo.dao.TodoAppDao;
 import com.sample.todo.entity.TodoApp;
@@ -26,9 +27,9 @@ public class TodoAppService {
         return dao.getTodoAppList();
     }
 
-    public void register(String title, String detail) {
+    public void register(String title, String detail, Date dueDate) {
         int nextId = dao.getNextId();
-        dao.insert(nextId, title, detail);
+        dao.insert(nextId, title, detail, dueDate);
     }
 
     //解除する
@@ -37,8 +38,8 @@ public class TodoAppService {
     }
 
     //更新する
-    public void updater(int todoId, String title, String detail) {
-        dao.update(todoId, title, detail);
+    public void updater(int todoId, String title, String detail, Date dueDate) {
+        dao.update(todoId, title, detail, dueDate);
     }
 
 }
