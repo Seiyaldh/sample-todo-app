@@ -18,10 +18,10 @@ public class TodoApp implements Serializable {
 
     private int todoId;
 
-    @Size(min = 0, max = 30, message="titleは{min}文字以上{max}文字以下です。") //titleの文字数制限
+    @Size(min = 0, max = 30, message="Titleは{min}文字以上{max}文字以下です。") //titleの文字数制限
     private String title;
 
-    @Size(min = 0, max = 30, message="detailは{min}文字以上{max}文字以下です。") //detailの文字数制限
+    @Size(min = 0, max = 30, message="Detailは{min}文字以上{max}文字以下です。") //detailの文字数制限
     private String detail;
 
     @DateTimeFormat(pattern = "yyyy-M-d")//dateの入力パターンを制限
