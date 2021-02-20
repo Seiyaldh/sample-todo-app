@@ -3,6 +3,8 @@ package com.sample.todo.entity;
 import java.io.Serializable;
 
 import javax.validation.constraints.Size;
+import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * TODO_APPテーブルに該当するエンティティクラス<br>
@@ -21,6 +23,9 @@ public class TodoApp implements Serializable {
 
     @Size(min = 0, max = 30, message="detailは{min}文字以上{max}文字以下です。") //detailの文字数制限
     private String detail;
+
+    @DateTimeFormat(pattern = "yyyy-M-d")//dateの入力パターンを制限
+    private Date dueDate;
 
     public TodoApp() {
     }
@@ -47,5 +52,13 @@ public class TodoApp implements Serializable {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public Date getDueDate() {
+        return this.dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 }
