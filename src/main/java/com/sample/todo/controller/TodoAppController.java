@@ -2,6 +2,7 @@ package com.sample.todo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.sample.todo.entity.TodoApp;
 import com.sample.todo.service.TodoAppService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.context.MessageSource;
 
 /**
  * ブラウザからのリクエストはここにくる
@@ -25,6 +27,10 @@ public class TodoAppController {
 
     @Autowired
     private TodoAppService service;
+    
+    //エラーメッセージを取得
+    @Autowired
+    private MessageSource msg;
 
     /**
      * valueの部分がURL<br>
@@ -37,8 +43,8 @@ public class TodoAppController {
         return "index";// resources/index.htmlを指している
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
-    String add(Model model) {
+    @RequestMapping(value = "/new", method = { RequestMethod.GET, RequestMethod.POST })
+    String add(@Validated @ModelAttribute("todoApp") TodoApp todoApp, BindingResult result, Model model) {
         return "detail";
     }
 
@@ -47,13 +53,17 @@ public class TodoAppController {
         if (result.hasErrors()) {
             List<String> errorList = new ArrayList<String>();
             for(ObjectError error : result.getAllErrors()) {
-            errorList.add(error.getDefaultMessage());
-}           model.addAttribute("validationError", errorList);
+                if (error.getDefaultMessage().matches(".*(dueDate).*")){
+                    String message = msg.getMessage("date_error_key", null, Locale.JAPAN);
+                    errorList.add(message);//もしdueDateでエラーが起きたら自作のエラーメッセージをadd
+                } else {
+                    errorList.add(error.getDefaultMessage());
+                }
+            }
+            model.addAttribute("validationError", errorList);
             return "detail";
-        }
-        //エラーが吐かれたら何もせずにdetailに戻る
-        
-        service.register(todoApp.getTitle(), todoApp.getDetail());
+        }//もしエラーが吐かれたらエラーメッセージを表示しdetailに戻る
+        service.register(todoApp.getTitle(), todoApp.getDetail(), todoApp.getDueDate());
         return "redirect:index";// 登録したらindexに移る
     }
 
@@ -76,15 +86,19 @@ public class TodoAppController {
         if (result.hasErrors()) {
             List<String> errorList = new ArrayList<String>();
             for(ObjectError error : result.getAllErrors()) {
-            errorList.add(error.getDefaultMessage());
-}           model.addAttribute("validationError", errorList);
+                if (error.getDefaultMessage().matches(".*(dueDate).*")){
+                    String message = msg.getMessage("date_error_key", null, Locale.JAPAN);
+                    errorList.add(message);//もしdueDateでエラーが起きたら自作のエラーメッセージをadd
+                } else {
+                    errorList.add(error.getDefaultMessage());
+                }
+            }
+            model.addAttribute("validationError", errorList);         
             model.addAttribute("todoId", todoId);
             return "update";
-        }
-        //エラーが吐かれたら何もせずにupdateに戻る
-
-        service.updater(todoId, todoApp.getTitle(), todoApp.getDetail());
-        return "redirect:index";// 登録したらindexに移る
+        }//もしエラーが吐かれたらエラ〜メッセージを表示してupdateに戻る
+        service.updater(todoId, todoApp.getTitle(), todoApp.getDetail(), todoApp.getDueDate());
+        return "redirect:index";// 更新したらindexに移る
     }
 
 }
