@@ -1,5 +1,6 @@
 package com.sample.todo.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.sample.todo.entity.TodoApp;
@@ -33,12 +34,13 @@ public class TodoAppDao {
         return ++maxTodoId;
     }
 
-    public <T> void insert(int todoId, String title, String detail) {
+    public <T> void insert(int todoId, String title, String detail, Date dueDate) {
         MapSqlParameterSource paramMap = new MapSqlParameterSource();
         paramMap.addValue("todoId", todoId);
         paramMap.addValue("title", title);
         paramMap.addValue("detail", detail);
-        jdbcTemplate.update("INSERT INTO TODO_APP VALUES(:todoId, :title, :detail)", paramMap);
+        paramMap.addValue("dueDate", dueDate);
+        jdbcTemplate.update("INSERT INTO TODO_APP VALUES(:todoId, :title, :detail, :dueDate)", paramMap);
     }
 
     /*テーブル削除命令を追加*/
@@ -49,11 +51,12 @@ public class TodoAppDao {
     }
 
     //テーブル更新命令を追加
-    public <T> void update(int todoId, String title, String detail) {
+    public <T> void update(int todoId, String title, String detail, Date dueDate) {
         MapSqlParameterSource paramMap = new MapSqlParameterSource();
         paramMap.addValue("todoId", todoId);
         paramMap.addValue("title", title);
         paramMap.addValue("detail", detail);
-        jdbcTemplate.update("UPDATE TODO_APP SET TITLE = :title, DETAIL = :detail WHERE TODO_ID = :todoId", paramMap);
+        paramMap.addValue("dueDate", dueDate);
+        jdbcTemplate.update("UPDATE TODO_APP SET TITLE = :title, DETAIL = :detail, DUE_DATE = :dueDate WHERE TODO_ID = :todoId", paramMap);
     }
 }
