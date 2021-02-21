@@ -82,7 +82,7 @@ public class TodoAppController {
 
     //更新の指示を行う
     @RequestMapping(value = "/updater", method = { RequestMethod.GET, RequestMethod.POST })
-    String updater(@RequestParam int todoId, @Validated @ModelAttribute("TodoApp")  TodoApp todoApp, BindingResult result, Model model) {
+    String updater(@RequestParam int todoId, @Validated @ModelAttribute TodoApp todoApp, BindingResult result, Model model) {
         if (result.hasErrors()) {
             List<String> errorList = new ArrayList<String>();
             for(ObjectError error : result.getAllErrors()) {
@@ -96,9 +96,64 @@ public class TodoAppController {
             model.addAttribute("validationError", errorList);         
             model.addAttribute("todoId", todoId);
             return "update";
-        }//もしエラーが吐かれたらエラ〜メッセージを表示してupdateに戻る
+        }//もしエラーが吐かれたらエラ-メッセージを表示してupdateに戻る
         service.updater(todoId, todoApp.getTitle(), todoApp.getDetail(), todoApp.getDueDate());
         return "redirect:index";// 更新したらindexに移る
     }
 
+    //titleによる検索の指示を行う
+    @RequestMapping(value = "/searchTitle" , method = { RequestMethod.GET, RequestMethod.POST })
+    String searchTitle(@ModelAttribute TodoApp todoApp, Model model) {
+        List<TodoApp> todoList = service.getSearchTitle(todoApp.getTitle());
+        if (todoList.size()!=0){
+            model.addAttribute("todoList", todoList);// ここの"todoList"というキーがindex.htmlで参照されている
+            return "index";// もしListが検索されたら検索結果を渡す
+        }
+        todoList = service.getTodoAppList();
+        model.addAttribute("todoList", todoList);
+        String no_hit_msg = msg.getMessage("no_hit", null, Locale.JAPAN);//検索結果がない時のメッセージを取得
+        model.addAttribute("no_hit_msg", no_hit_msg);
+        return "index";// 検索されなければ全件渡してindexに移る
+    }
+
+    //detailによる検索の指示を行う
+    @RequestMapping(value = "/searchDetail" , method = { RequestMethod.GET, RequestMethod.POST })
+    String searchDetail(@ModelAttribute TodoApp todoApp, Model model) {
+        List<TodoApp> todoList = service.getSearchDetail(todoApp.getDetail());
+        if (todoList.size()!=0){
+            model.addAttribute("todoList", todoList);// ここの"todoList"というキーがindex.htmlで参照されている
+            return "index";// もしListが検索されたら検索結果を渡す
+        }
+        todoList = service.getTodoAppList();
+        model.addAttribute("todoList", todoList);
+        String no_hit_msg = msg.getMessage("no_hit", null, Locale.JAPAN);//検索結果がない時のメッセージを取得
+        model.addAttribute("no_hit_msg", no_hit_msg);
+        return "index";// 検索されなければ全件渡してindexに移る
+    }
+
+    //dueDateによる検索の指示を行う
+    @RequestMapping(value = "/searchDueDate" , method = { RequestMethod.GET, RequestMethod.POST })
+    String searchDueDate(@Validated @ModelAttribute TodoApp todoApp, BindingResult result, Model model) {
+        List<TodoApp> todoList = service.getSearchDueDate(todoApp.getDueDate(),todoApp.getStartDueDate());
+        if (result.hasErrors()) {
+            for(ObjectError error : result.getAllErrors()) {
+                if (error.getDefaultMessage().matches(".*(dueDate).*") || error.getDefaultMessage().matches(".*(startDueDate).*")) {
+                    todoList = service.getTodoAppList();
+                    model.addAttribute("todoList", todoList);
+                    String no_hit_msg = msg.getMessage("date_error_key", null, Locale.JAPAN);//もしdueDateでエラーが起きたら自作のエラーメッセージを取得
+                    model.addAttribute("no_hit_msg", no_hit_msg);
+                    return "index";// duedDateでエラーが起これば全件渡してindexに移る
+                }
+            }
+        }
+        if (todoList.size()!=0){
+            model.addAttribute("todoList", todoList);// ここの"todoList"というキーがindex.htmlで参照されている
+            return "index";// もしListが検索されたら検索結果を渡す
+        }
+        todoList = service.getTodoAppList();
+        model.addAttribute("todoList", todoList);
+        String no_hit_msg = msg.getMessage("no_hit", null, Locale.JAPAN);//検索結果がない時のメッセージを取得
+        model.addAttribute("no_hit_msg", no_hit_msg);
+        return "index";// 検索されなければ全件渡してindexに移る
+    }
 }
