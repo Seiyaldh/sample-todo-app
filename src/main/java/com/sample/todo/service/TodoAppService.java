@@ -42,4 +42,19 @@ public class TodoAppService {
         dao.update(todoId, title, detail, dueDate);
     }
 
+    //タイトルで検索する
+    public List<TodoApp> getSearchTitle(String title) {
+        return dao.getSearchTitle(title);
+    }
+
+    //締切日で検索する
+    public List<TodoApp> getSearchDetail(String detail) {
+        return dao.getSearchDetail(detail);
+    }
+
+    //締切日で検索する
+    public List<TodoApp> getSearchDueDate(Date dueDate, Date stratDueDate) {
+        return dao.getSearchDueDate(dueDate, stratDueDate);
+    }
+
 }
