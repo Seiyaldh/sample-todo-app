@@ -18,14 +18,17 @@ public class TodoApp implements Serializable {
 
     private int todoId;
 
-    @Size(min = 0, max = 30, message="Titleは{min}文字以上{max}文字以下です。") //titleの文字数制限
+    @Size(min = 1, max = 30, message="Titleは{min}文字以上{max}文字以下です。") //titleの文字数制限
     private String title;
 
-    @Size(min = 0, max = 30, message="Detailは{min}文字以上{max}文字以下です。") //detailの文字数制限
+    @Size(min = 1, max = 30, message="Detailは{min}文字以上{max}文字以下です。") //detailの文字数制限
     private String detail;
 
     @DateTimeFormat(pattern = "yyyy-M-d")//dateの入力パターンを制限
     private Date dueDate;
+
+    @DateTimeFormat(pattern = "yyyy-M-d")//dateの入力パターンを制限
+    private Date startDueDate;
 
     public TodoApp() {
     }
@@ -58,7 +61,15 @@ public class TodoApp implements Serializable {
         return this.dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setDueDate(Date startDueDate) {
+        this.dueDate = startDueDate;
+    }
+
+    public Date getStartDueDate() {
+        return this.startDueDate;
+    }
+
+    public void setStartDueDate(Date startDueDate) {
+        this.startDueDate = startDueDate;
     }
 }
