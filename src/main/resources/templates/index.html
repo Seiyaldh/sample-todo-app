@@ -9,8 +9,33 @@
 </head>
 
 <body>
+    <h1>Search List</h1>
+    <form method="POST" action="./searchTitle">
+        <label for="title">Title</label>
+        <input id="title" type="text" name="title"></input>
+        <input class="button" type="submit" name="searchTitle" value="Search Title"></input>
+    </form>
+
+    <form method="POST" action="./searchDetail">
+        <label for="detail">Detail</label>
+        <input id="detail" type="text" name="detail"></input>
+        <input class="button" type="submit" name="searchDetail" value="Search Detail"></input>
+    </form>
+
+    <form method="POST" action="./searchDueDate">
+        <label for="dueDate">Due Date</label>
+        <input id="startDueDate" type="date" name="startDueDate">〜</input>
+        <input id="dueDate" type="date" name="dueDate"></input>
+        <input class="button" type="submit" name="searchDueDate" value="Search Due Date"></input>
+    </form>
+
+    <div th:if="${no_hit_msg}">
+        <p style="color:red;" th:text="${no_hit_msg}"></p>
+    </div>
+
     <h1>Todo List</h1>
     <div class="operation-area">
+        <button type="button" onclick="location.href='./index'">Home</button>
         <button type="button" onclick="location.href='./new'">New Todo</button>
     </div>
     <table>
