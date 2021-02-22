@@ -59,4 +59,51 @@ public class TodoAppDao {
         paramMap.addValue("dueDate", dueDate);
         jdbcTemplate.update("UPDATE TODO_APP SET TITLE = :title, DETAIL = :detail, DUE_DATE = :dueDate WHERE TODO_ID = :todoId", paramMap);
     }
+
+    //titleによるテーブル検索命令を行う
+    public List<TodoApp> getSearchTitle(String title) {
+        MapSqlParameterSource paramMap = new MapSqlParameterSource();
+        String qer = "";
+        qer = "SELECT * FROM TODO_APP WHERE TITLE LIKE :title";
+        if (title != ""){
+            paramMap.addValue("title", "%" + title + "%");
+        } else {
+            paramMap.addValue("title", null);
+        }
+        List<TodoApp> resultList = jdbcTemplate.query(qer,paramMap,new TodoAppRowMapper());
+        return resultList;
+    }
+
+    //detailによるテーブル検索命令を行う
+    public List<TodoApp> getSearchDetail(String detail) {
+        MapSqlParameterSource paramMap = new MapSqlParameterSource();
+        String qer = "";
+        qer = "SELECT * FROM TODO_APP WHERE DETAIL LIKE :detail";
+        if (detail != ""){
+            paramMap.addValue("detail", "%" + detail + "%");
+        } else {
+            paramMap.addValue("detail", null);
+        }
+        List<TodoApp> resultList = jdbcTemplate.query(qer,paramMap,new TodoAppRowMapper());
+        return resultList;
+    }
+
+    //dueDateによるテーブル検索命令を行う
+    public List<TodoApp> getSearchDueDate(Date dueDate, Date startDueDate) {
+        MapSqlParameterSource paramMap = new MapSqlParameterSource();
+        String qer = "";
+        paramMap.addValue("startDueDate", startDueDate);
+        paramMap.addValue("dueDate", dueDate);
+        if (startDueDate != null && dueDate == null) {
+            qer = "SELECT * FROM TODO_APP WHERE DUE_DATE >= :startDueDate";
+        } else {
+            if (startDueDate == null && dueDate != null) {
+                qer = "SELECT * FROM TODO_APP WHERE DUE_DATE <= :dueDate";
+            } else {
+                qer = "SELECT * FROM TODO_APP WHERE DUE_DATE >= :startDueDate AND DUE_DATE <= :dueDate";
+            }
+        }
+        List<TodoApp> resultList = jdbcTemplate.query(qer,paramMap,new TodoAppRowMapper());
+        return resultList;
+    }
 }
