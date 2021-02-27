@@ -27,6 +27,18 @@ public class TodoAppDao {
         return resultList;
     }
 
+    public List<TodoApp> getMostRecentTodoAppList() {
+        Date now = new Date();
+        MapSqlParameterSource paramMap = new MapSqlParameterSource();
+        paramMap.addValue("now", now);
+        Date mostRecentDueDate =  jdbcTemplate.queryForObject("SELECT DUE_DATE FROM TODO_APP　WHERE DUE_DATE > :now ORDER BY DUE_DATE ASC LIMIT 1", 
+            paramMap, Date.class);
+        paramMap.addValue("mostRecentDueDate", mostRecentDueDate);
+        List<TodoApp> resultList = jdbcTemplate.query("SELECT * FROM TODO_APP　WHERE DUE_DATE = :mostRecentDueDate", paramMap,
+                new TodoAppRowMapper());
+        return resultList;
+    }
+
     //レコードが0の時にnullではなく、0を返すように変更
     public int getNextId() {
         int maxTodoId = jdbcTemplate.queryForObject("SELECT NVL(MAX(TODO_ID),0) FROM TODO_APP;",
