@@ -9,7 +9,27 @@
 </head>
 
 <body>
-    <h1>Search List</h1>
+    <h1>Most Recent Todo List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Detail</th>
+                <th>Due date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="result : ${mostRecentTodoList}">
+                <td class="todo-id" th:text="${result['todoId']}"></td>
+                <td class="title" th:text="${result['title']}"></td>
+                <td class="detail" th:text="${result['detail']}"></td>
+                <td class="dueDate" th:text="${result['dueDate']}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h1>Search Todo List</h1>
     <form method="POST" action="./searchTitle">
         <label for="title">Title</label>
         <input type="text" name="title"></input>
