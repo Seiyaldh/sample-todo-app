@@ -46,6 +46,8 @@ public class TodoAppController {
     }
 
     public static String valEmptyTodoList(List<TodoApp> todoList, MessageSource msg, TodoAppService service, Model model) {
+        List<TodoApp> mostRecentTodoList = service.getMostRecentTodoAppList();
+        model.addAttribute("mostRecentTodoList", mostRecentTodoList);
         if (todoList.size()!=0){
             model.addAttribute("todoList", todoList);// ここの"todoList"というキーがindex.htmlで参照されている
             return "index";// もしListが検索されたら検索結果を渡す
@@ -72,7 +74,9 @@ public class TodoAppController {
      */
     @RequestMapping(value = { "/", "index" }, method = { RequestMethod.GET, RequestMethod.POST })
     String index(Model model) {
+        List<TodoApp> mostRecentTodoList = service.getMostRecentTodoAppList();
         List<TodoApp> todoList = service.getTodoAppList();
+        model.addAttribute("mostRecentTodoList", mostRecentTodoList);
         model.addAttribute("todoList", todoList);// ここの"todoList"というキーがindex.htmlで参照されている
         return "index";// resources/index.htmlを指している
     }
@@ -140,6 +144,8 @@ public class TodoAppController {
                     model.addAttribute("todoList", todoList);
                     String noHitMsg = msg.getMessage("date_error_key", null, Locale.JAPAN);//もしdueDateでエラーが起きたら自作のエラーメッセージを取得
                     model.addAttribute("noHitMsg", noHitMsg);
+                    List<TodoApp> mostRecentTodoList = service.getMostRecentTodoAppList();
+                    model.addAttribute("mostRecentTodoList", mostRecentTodoList);
                     return "index";
                 }
             }
