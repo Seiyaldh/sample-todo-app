@@ -18,15 +18,15 @@
         <ul>
             <li>
                 <label for="title">Title</label>
-                <input id="title" type="text" name="title"></input>
+                <input id="title" type="text" name="title" th:value="${title}"></input>
             </li>
             <li>
                 <label for="detail">Detail</label>
-                <textarea id="detail" type="text" name="detail"></textarea>
+                <textarea id="detail" type="text" name="detail" th:text="${detail}"></textarea>
             </li>
             <li>
                 <label for="dueDate">Due Date</label>
-                <input id="dueDate" type="date" name="dueDate"></input>
+                <input id="dueDate" type="date" name="dueDate" th:value="${dueDate}" placeholder="yyyy-M-d"></input>
             </li>
             <li><input type="hidden" name="todoId" th:value="${todoId}"></input></li>
             <li><input class="button" type="submit" name="updater" value="Updater"></input></li>
