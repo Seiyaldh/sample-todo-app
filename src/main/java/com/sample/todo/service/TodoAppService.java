@@ -47,7 +47,7 @@ public class TodoAppService {
         return dao.getSearchTitle(title);
     }
 
-    //締切日で検索する
+    //詳細で検索する
     public List<TodoApp> getSearchDetail(String detail) {
         return dao.getSearchDetail(detail);
     }
