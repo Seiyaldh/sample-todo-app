@@ -27,6 +27,10 @@ public class TodoAppService {
         return dao.getTodoAppList();
     }
 
+    public List<TodoApp> getMostRecentTodoAppList() {
+        return dao.getMostRecentTodoAppList();
+    }
+
     public void register(String title, String detail, Date dueDate) {
         int nextId = dao.getNextId();
         dao.insert(nextId, title, detail, dueDate);
