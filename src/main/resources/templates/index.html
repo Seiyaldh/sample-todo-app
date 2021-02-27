@@ -12,20 +12,20 @@
     <h1>Search List</h1>
     <form method="POST" action="./searchTitle">
         <label for="title">Title</label>
-        <input id="title" type="text" name="title"></input>
+        <input type="text" name="title"></input>
         <input class="button" type="submit" name="searchTitle" value="Search Title"></input>
     </form>
 
     <form method="POST" action="./searchDetail">
         <label for="detail">Detail</label>
-        <input id="detail" type="text" name="detail"></input>
+        <input type="text" name="detail"></input>
         <input class="button" type="submit" name="searchDetail" value="Search Detail"></input>
     </form>
 
     <form method="POST" action="./searchDueDate">
         <label for="dueDate">Due Date</label>
-        <input id="startDueDate" type="date" name="startDueDate">〜</input>
-        <input id="dueDate" type="date" name="dueDate"></input>
+        <input type="date" name="startDueDate" placeholder="yyyy-M-d">〜</input>
+        <input type="date" name="dueDate" placeholder="yyyy-M-d"></input>
         <input class="button" type="submit" name="searchDueDate" value="Search Due Date"></input>
     </form>
 
@@ -61,6 +61,9 @@
                 </td>
                 <td>
                     <form method="POST" action="./change">
+                        <input type="hidden" name="title" th:value="${result['title']}"></input>
+                        <input type="hidden" name="detail" th:value="${result['detail']}"></input>
+                        <input type="hidden" name="dueDate" th:value="${result['dueDate']}"></input>
                         <button type="submit" name="todoId" th:value="${result['todoId']}">Update</button>
                     </form>
                 </td>
