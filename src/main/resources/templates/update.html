@@ -9,14 +9,11 @@
 </head>
 
 <body>
-    <table>
-        <tr th:if="${validationError}" th:each="error : ${validationError}">
-          <td style="color:red;" th:text="${error}"></td>
-        </tr>
-    </table>
+    <div>
+        <button type="button" onclick="location.href='./index'">Home</button>
+    </div>
 
     <h1>Update Todo</h1>
-
     <form method="POST" action="./updater">
         <ul>
             <li>
@@ -35,6 +32,12 @@
             <li><input class="button" type="submit" name="updater" value="Updater"></input></li>
         </ul>
     </form>
+
+    <table>
+        <tr th:if="${validationError}" th:each="error : ${validationError}">
+          <td style="color:red;" th:text="${error}"></td>
+        </tr>
+    </table>
 </body>
 
 </html>
