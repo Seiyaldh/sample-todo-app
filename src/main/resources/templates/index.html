@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Sample TODO Application</title>
-
+    <script type="text/javascript" src="js/index.js"></script>
     <link rel="stylesheet" href="css/index.css" type="text/css" />
 </head>
 
@@ -75,7 +75,7 @@
                 <td class="detail" th:text="${result['detail']}"></td>
                 <td class="dueDate" th:text="${result['dueDate']}"></td>
                 <td>
-                    <form method="POST" action="./release">
+                    <form method="POST" action="./release" name="releaseForm"  onsubmit="return releaseCheck()">
                         <button type="submit" name="releaseId" th:value="${result['todoId']}">Remove</button>
                     </form>
                 </td>
