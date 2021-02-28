@@ -21,6 +21,16 @@ public class TodoAppDao {
     @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
 
+    //追加と更新時のparamMapへの値追加
+    public static void paramAddValue(MapSqlParameterSource paramMap, int todoId, String title, 
+            String detail, Date dueDate){
+        paramMap.addValue("todoId", todoId);
+        paramMap.addValue("title", title);
+        paramMap.addValue("detail", detail);
+        paramMap.addValue("dueDate", dueDate);
+        return;
+    }
+
     public List<TodoApp> getTodoAppList() {
         List<TodoApp> resultList = jdbcTemplate.query("SELECT * FROM TODO_APP", new MapSqlParameterSource(null),
                 new TodoAppRowMapper());
@@ -48,10 +58,7 @@ public class TodoAppDao {
 
     public <T> void insert(int todoId, String title, String detail, Date dueDate) {
         MapSqlParameterSource paramMap = new MapSqlParameterSource();
-        paramMap.addValue("todoId", todoId);
-        paramMap.addValue("title", title);
-        paramMap.addValue("detail", detail);
-        paramMap.addValue("dueDate", dueDate);
+        paramAddValue(paramMap,todoId,title,detail,dueDate);
         jdbcTemplate.update("INSERT INTO TODO_APP VALUES(:todoId, :title, :detail, :dueDate)", paramMap);
     }
 
@@ -65,57 +72,52 @@ public class TodoAppDao {
     //テーブル更新命令を追加
     public <T> void update(int todoId, String title, String detail, Date dueDate) {
         MapSqlParameterSource paramMap = new MapSqlParameterSource();
-        paramMap.addValue("todoId", todoId);
-        paramMap.addValue("title", title);
-        paramMap.addValue("detail", detail);
-        paramMap.addValue("dueDate", dueDate);
+        paramAddValue(paramMap,todoId,title,detail,dueDate);
         jdbcTemplate.update("UPDATE TODO_APP SET TITLE = :title, DETAIL = :detail, DUE_DATE = :dueDate WHERE TODO_ID = :todoId", paramMap);
     }
 
     //titleによるテーブル検索命令を行う
     public List<TodoApp> getSearchTitle(String title) {
         MapSqlParameterSource paramMap = new MapSqlParameterSource();
-        String qer = "";
-        qer = "SELECT * FROM TODO_APP WHERE TITLE LIKE :title";
+        String query = "SELECT * FROM TODO_APP WHERE TITLE LIKE :title";
         if (title != ""){
             paramMap.addValue("title", "%" + title + "%");
         } else {
             paramMap.addValue("title", null);
         }
-        List<TodoApp> resultList = jdbcTemplate.query(qer,paramMap,new TodoAppRowMapper());
+        List<TodoApp> resultList = jdbcTemplate.query(query,paramMap,new TodoAppRowMapper());
         return resultList;
     }
 
     //detailによるテーブル検索命令を行う
     public List<TodoApp> getSearchDetail(String detail) {
         MapSqlParameterSource paramMap = new MapSqlParameterSource();
-        String qer = "";
-        qer = "SELECT * FROM TODO_APP WHERE DETAIL LIKE :detail";
+        String query = "SELECT * FROM TODO_APP WHERE DETAIL LIKE :detail";
         if (detail != ""){
             paramMap.addValue("detail", "%" + detail + "%");
         } else {
             paramMap.addValue("detail", null);
         }
-        List<TodoApp> resultList = jdbcTemplate.query(qer,paramMap,new TodoAppRowMapper());
+        List<TodoApp> resultList = jdbcTemplate.query(query,paramMap,new TodoAppRowMapper());
         return resultList;
     }
 
     //dueDateによるテーブル検索命令を行う
     public List<TodoApp> getSearchDueDate(Date dueDate, Date startDueDate) {
         MapSqlParameterSource paramMap = new MapSqlParameterSource();
-        String qer = "";
+        String query = "";
         paramMap.addValue("startDueDate", startDueDate);
         paramMap.addValue("dueDate", dueDate);
         if (startDueDate != null && dueDate == null) {
-            qer = "SELECT * FROM TODO_APP WHERE DUE_DATE >= :startDueDate";
+            query = "SELECT * FROM TODO_APP WHERE DUE_DATE >= :startDueDate";
         } else {
             if (startDueDate == null && dueDate != null) {
-                qer = "SELECT * FROM TODO_APP WHERE DUE_DATE <= :dueDate";
+                query = "SELECT * FROM TODO_APP WHERE DUE_DATE <= :dueDate";
             } else {
-                qer = "SELECT * FROM TODO_APP WHERE DUE_DATE >= :startDueDate AND DUE_DATE <= :dueDate";
+                query = "SELECT * FROM TODO_APP WHERE DUE_DATE >= :startDueDate AND DUE_DATE <= :dueDate";
             }
         }
-        List<TodoApp> resultList = jdbcTemplate.query(qer,paramMap,new TodoAppRowMapper());
+        List<TodoApp> resultList = jdbcTemplate.query(query,paramMap,new TodoAppRowMapper());
         return resultList;
     }
 }
