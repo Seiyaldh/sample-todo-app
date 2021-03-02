@@ -36,27 +36,27 @@ public class TodoAppService {
         dao.insert(nextId, title, detail, dueDate);
     }
 
-    //解除する
+    // 解除する
     public void release(int todoId) {
         dao.extract(todoId);
     }
 
-    //更新する
+    // 更新する
     public void updater(int todoId, String title, String detail, Date dueDate) {
         dao.update(todoId, title, detail, dueDate);
     }
 
-    //タイトルで検索する
+    // タイトルで検索する
     public List<TodoApp> getSearchTitle(String title) {
         return dao.getSearchTitle(title);
     }
 
-    //詳細で検索する
+    // 詳細で検索する
     public List<TodoApp> getSearchDetail(String detail) {
         return dao.getSearchDetail(detail);
     }
 
-    //締切日で検索する
+    // 締切日で検索する
     public List<TodoApp> getSearchDueDate(Date dueDate, Date stratDueDate) {
         return dao.getSearchDueDate(dueDate, stratDueDate);
     }
