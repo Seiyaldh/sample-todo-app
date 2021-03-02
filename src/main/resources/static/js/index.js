@@ -1,5 +1,5 @@
 //削除チェックの関数
-function releaseCheck() {
+const releaseCheck = () => {
     // 「OK」時の処理開始 ＋ 確認ダイアログの表示
 	if(window.confirm('本当にいいんですか？')){
 		return true;
